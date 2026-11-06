@@ -69,9 +69,7 @@ p {
 img {
   max-width: 100%;
 }
-main {
-  overflow: clip;
-}
+main { overflow: visible; }
 section {
   scroll-margin-top: 0;
 }
@@ -762,6 +760,13 @@ section {
   gap: 8vw;
   min-height: 450px;
 }
+.process-simulator { min-width: 0; }
+.process-simulator .engineering-canvas { height: 380px; }
+.process-simulator-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.process-simulator-controls button { border: 1px solid #494b50; background: #191a1e; color: #c4c6ca; padding: 11px 12px; font-size: 10px; letter-spacing: .04em; cursor: pointer; }
+.process-simulator-controls button[aria-pressed="true"] { background: #a82129; border-color: #a82129; color: #fff; }
+.process-simulator-controls button span { display: block; margin-top: 5px; font-size: 8px; opacity: .8; }
+.process-alert-result { color: #e8e8e8; font-size: 11px; letter-spacing: .08em; margin: 18px 0; }
 .process-stage .ecosystem {
   height: 420px;
 }

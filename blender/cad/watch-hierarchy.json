@@ -1,0 +1,48 @@
+[
+  {
+    "depth": 0,
+    "name": "TSI Wrist Band v24",
+    "referenceName": "",
+    "solidCount": 98,
+    "bounds": [
+      -28.887,
+      -24.224,
+      -20.998,
+      31.097,
+      27.962,
+      51.731
+    ],
+    "children": [
+      {
+        "depth": 1,
+        "name": "3D_PCB3_2026-09-05 v1",
+        "referenceName": "3D_PCB3_2026-09-05 v1",
+        "solidCount": 97,
+        "bounds": [
+          -18.892,
+          -19.616,
+          -20.998,
+          21.073,
+          18.074,
+          51.731
+        ],
+        "children": []
+      },
+      {
+        "depth": 1,
+        "name": "Component48",
+        "referenceName": "Component48",
+        "solidCount": 1,
+        "bounds": [
+          -28.882,
+          -24.218,
+          -1.181,
+          31.092,
+          27.956,
+          15.209
+        ],
+        "children": []
+      }
+    ]
+  }
+]

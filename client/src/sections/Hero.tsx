@@ -1,55 +1,26 @@
 import { ArrowDown, ArrowUpRight } from "lucide-react";
-import { Ecosystem } from "../components/ProductVisual";
-import { Brand } from "../components/Brand";
+import "../styles/home-products.css";
+
 export function Hero() {
-  return (
-    <section id="home" className="hero">
-      <div className="hero-grid" />
-      <div className="hero-topline hero-reveal">
-        <span className="eyebrow">
-          <i /> ENGINEERED FOR INDEPENDENCE
-        </span>
-        <span className="edition">TSI / ASSISTIVE TECHNOLOGY</span>
+  return <section id="home" className="product-home">
+    <div className="product-home__copy">
+      <span className="eyebrow"><i /> TECHO SPARK INDUSTRIES / ASSISTIVE TECHNOLOGY</span>
+      <h1>SEE BEYOND <em>SIGHT.</em></h1>
+      <h2>MOVE WITH CONFIDENCE.</h2>
+      <p>Intelligent assistive technology designed to help visually impaired individuals identify surrounding obstacles through directional haptic feedback.</p>
+      <div className="product-home__actions">
+        <a className="button" href="#assistive-module">EXPLORE MODULE <ArrowUpRight size={17} /></a>
+        <a className="button secondary" href="#watches">EXPLORE WATCH <ArrowUpRight size={17} /></a>
       </div>
-      <div className="hero-copy">
-        <h1 className="hero-reveal">
-          SEE BEYOND
-          <br />
-          <span>SIGHT.</span>
-        </h1>
-        <h2 className="hero-reveal">MOVE WITH CONFIDENCE.</h2>
-        <p className="hero-reveal">
-          An intelligent assistive mobility ecosystem designed to transform the
-          way visually impaired individuals navigate their surroundings.
-        </p>
-        <div className="hero-actions hero-reveal">
-          <a className="button" href="#product">
-            EXPLORE THE PRODUCT <ArrowUpRight size={17} />
-          </a>
-          <a className="text-link" href="#how-it-works">
-            DISCOVER HOW IT WORKS <span>↗</span>
-          </a>
-        </div>
-      </div>
-      <div className="hero-stage hero-reveal">
-        <span className="huge-tsi" aria-hidden="true">
-          TSI
-        </span>
-        <Ecosystem />
-        <div className="stage-label">
-          <span>
-            <i /> CONNECTED ASSISTIVE ECOSYSTEM
-          </span>
-          <small>ONE STICK. TWO WATCHES. A CONNECTED RESPONSE.</small>
-        </div>
-      </div>
-      <div className="hero-bottom">
-        <a href="#introduction">
-          <ArrowDown size={15} /> SCROLL TO DISCOVER
-        </a>
-        <Brand />
-        <span>HUMAN-CENTERED. TECHNOLOGY-DRIVEN.</span>
-      </div>
-    </section>
-  );
+      <span className="product-home__source">TWO PRODUCTS. ACTUAL CAD. ONE CONNECTED VISION.</span>
+    </div>
+    <div className="product-home__visual" aria-label="STEP-derived assistive module and wearable watch product renderings">
+      <div className="product-home__halo" />
+      <img className="product-home__module" src="/assets/tsi-module-hero.png" alt="TSI assistive module rendered from the supplied STEP assembly" fetchPriority="high" />
+      <img className="product-home__watch" src="/assets/tsi-watch-hero.png" alt="TSI wearable watch housing and PCB rendered from the supplied STEP assembly" fetchPriority="high" />
+      <span className="product-home__module-label">01 / ASSISTIVE MODULE</span>
+      <span className="product-home__watch-label">02 / WEARABLE WATCH</span>
+    </div>
+    <a className="product-home__scroll" href="#assistive-module"><ArrowDown size={15} /> SCROLL TO EXPLORE</a>
+  </section>;
 }

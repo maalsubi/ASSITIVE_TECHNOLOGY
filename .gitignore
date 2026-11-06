@@ -13,3 +13,13 @@ logs/
 server/data/
 coverage/
 test-results/
+backups/
+
+# CAD conversion artifacts
+blender/cad/*.obj
+blender/cad/*.mtl
+blender/renders/turntable/
+blender/renders/cinematic-frames/
+blender/*.blend1
+blender/models/einar_v1.zip
+blender/models/human_base_meshes_bundle.blend

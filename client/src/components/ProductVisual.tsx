@@ -1,3 +1,4 @@
+import { Scene } from "./engineering/Scene";
 import { useState } from "react";
 import { ScanLine, Watch, Cpu } from "lucide-react";
 const paths = {
@@ -57,26 +58,8 @@ export function ProductVisual({
 }
 export function Ecosystem({ className = "" }: { className?: string }) {
   return (
-    <div className={`ecosystem ${className}`}>
-      <div className="orbit orbit-one" />
-      <div className="orbit orbit-two" />
-      <div className="signal-line line-one" />
-      <div className="signal-line line-two" />
-      <div className="floating watch-left">
-        <ProductVisual type="watch" />
-        <span className="visual-label">01 / WEARABLE</span>
-      </div>
-      <div className="central-product">
-        <ProductVisual eager />
-        <span className="visual-label">ASSISTIVE MODULE</span>
-      </div>
-      <div className="floating watch-right">
-        <ProductVisual type="watch" />
-        <span className="visual-label">02 / WEARABLE</span>
-      </div>
-      <span className="composition-note">
-        PRODUCT PHOTOGRAPHS · TWO-WATCH CONFIGURATION ILLUSTRATED
-      </span>
+    <div className={className} style={{ height: "100%", minHeight: 290 }}>
+      <Scene mode="ecosystem" />
     </div>
   );
 }

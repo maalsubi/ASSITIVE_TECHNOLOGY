@@ -1,6 +1,6 @@
 # Techo Spark Industries
 
-A local full-stack product website with React, TypeScript, Vite, Tailwind, GSAP ScrollTrigger, Lenis, Framer Motion, Express, Zod, optional MongoDB/Mongoose, and optional Nodemailer notifications.
+A local full-stack product website with React, TypeScript, Vite, Three.js, Express, Zod, optional MongoDB/Mongoose, and optional Nodemailer notifications. The current product experience uses native browser scrolling.
 
 ## Run locally
 
@@ -56,7 +56,7 @@ TechoSpark/
 │   │   └── favicon/
 │   ├── src/
 │   │   ├── components/  # Brand, navigation, footer, product compositions
-│   │   ├── hooks/       # GSAP/Lenis lifecycle and responsive motion
+│   │   ├── hooks/       # Native page progress
 │   │   ├── sections/    # Hero, product story, contact form
 │   │   ├── styles/      # Design system and responsive layouts
 │   │   ├── App.tsx
@@ -85,11 +85,17 @@ TechoSpark/
 
 ## Content and motion
 
-All five supplied images are included. The supplied handle photographs are shown as-is through CSS framing; a full walking-stick photo was not supplied. The single watch photograph is reused for the two-watch ecosystem. Hardware layers illustrate structure and are not a physically verified exploded view. Unknown specifications are explicitly “To be specified”; edit the specification list in `client/src/sections/Story.tsx` when verified information is available. No sensor types, protocols, ranges, battery capacities, accuracy, certifications, addresses, or phone numbers have been invented.
+The page has exactly five main sections: Home, Assistive Module, Watches, How It Works, and About & Contact. The last section includes the original company introduction, a specifications table with unknown values marked “Pending verification,” and the existing contact form and Express API. No human or human-use animation appears in the website.
 
-Desktop scroll storytelling uses a pinned GSAP timeline. Tablets and phones use natural document flow. Reduced motion disables smooth scrolling, pinned scenes, decorative loops, and reveal animations. GSAP contexts and ticker listeners are cleaned up on unmount. Framer Motion respects reduced motion. Process tabs support arrow keys/Home/End; navigation and forms support keyboard operation. Content is present independent of animation initialization.
+Both product views come from the supplied STEP assemblies. The module contains 314 source solids in seven web groups. The watch contains 98 source solids; one exact duplicate is represented by the same web mesh, and the remaining geometry is arranged in six web groups. The watch STEP contains the housing and PCB but no separate strap solid. [CAD component mapping](docs/cad-component-mapping.md) records source indices, product names, assembly positions, and presentation groups.
 
-Original JPEGs remain in `client/public/assets`; see the asset README for mapping. Replace them with matching filenames to update the site. A future render sequence can be introduced inside `ProductVisual` while preserving the existing composition and timeline interface; no frame sequence is currently used.
+Each product has an independent six-stage scroll timeline: reveal, exterior, aligned separation, board, close-up and reassembly. The final watch stage shows two instances of the same CAD design. Manual rotation and zoom work until the next real scroll, which resumes the authored timeline. Native scrolling replaces the former Lenis and GSAP opacity-reveal combination that could leave sections blank. The 3D renderer loads near the viewer, pauses rendering outside the viewport, uses a capped pixel ratio, and has a CAD-image fallback. Reduced-motion users receive immediate state updates without transition animation.
+
+How It Works shows one intended-behavior simulator with actual CAD product renderings. Left, right and both-side controls illuminate only the corresponding watch images. Sensor position, wireless routing and physical haptics remain unverified. The website does not present inferred engineering details as confirmed specifications.
+
+## CAD and Blender sources
+
+`blender/cad/TSI-REV3.step` and `blender/cad/TSI-Wrist-Band.step` are unchanged copies of the supplied files. Their manifests and tessellated solids are in `blender/cad/meshes/` and `blender/cad/watch-meshes/`. The web assets are `client/public/assets/tsi-rev3-cad.glb` and `client/public/assets/tsi-watch-cad.glb`. Editable Blender scenes are `blender/cad-product.blend` and `blender/watch-cad-product.blend`. Scripts under `blender/scripts/` regenerate the assets. STEP export requires `cadquery-ocp`; Blender 5.2 was used for the web exports and studio images.
 
 ## Git setup
 

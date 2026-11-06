@@ -3,12 +3,10 @@ import { Menu, X, ArrowUpRight } from "lucide-react";
 import { Brand } from "./Brand";
 export const links = [
   ["home", "Home"],
-  ["technology", "Technology"],
-  ["how-it-works", "How it works"],
-  ["product", "Product"],
-  ["specifications", "Specifications"],
-  ["about", "About us"],
-  ["contact", "Contact"],
+  ["assistive-module", "Assistive Module"],
+  ["watches", "Watches"],
+  ["how-it-works", "How It Works"],
+  ["about-contact", "About & Contact"],
 ];
 export function Navigation() {
   const [open, setOpen] = useState(false);
@@ -64,8 +62,8 @@ export function Navigation() {
           </a>
         ))}
       </nav>
-      <a className="nav-cta" href="#technology">
-        EXPLORE THE TECHNOLOGY <ArrowUpRight size={14} />
+      <a className="nav-cta" href="#assistive-module">
+        EXPLORE THE MODULE <ArrowUpRight size={14} />
       </a>
     </header>
   );

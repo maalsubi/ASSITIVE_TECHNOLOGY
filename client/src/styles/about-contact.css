@@ -1,0 +1,25 @@
+.about-contact { background: #0c0d10; border-top: 1px solid #30343a; }
+.about-contact__intro { display: grid; grid-template-columns: .8fr 1.2fr; gap: 8vw; align-items: center; padding: 115px max(6vw, 24px); }
+.about-contact__brand { display: flex; flex-direction: column; align-items: center; gap: 30px; border: 1px solid #36383d; padding: 60px 25px; background: radial-gradient(ellipse, #55141b42, transparent 66%); }
+.about-contact__brand .brand { flex-direction: column; gap: 20px; }
+.about-contact__brand .brand img { width: 245px; height: auto; }
+.about-contact__brand .brand-name { text-align: center; font-size: 12px; }
+.about-contact__brand > span { font-size: 8px; letter-spacing: .2em; color: #a8adb2; }
+.about-contact__intro h2 { font-size: clamp(38px, 4.1vw, 68px); line-height: 1.02; letter-spacing: -.05em; margin: 26px 0; }
+.about-contact__intro h2 em, .about-contact__specs h3 em { font-style: normal; color: #e5232b; }
+.about-contact__intro p { max-width: 600px; font-size: 14px; }
+.about-contact__specs { display: grid; grid-template-columns: .7fr 1.3fr; gap: 7vw; padding: 85px max(6vw, 24px); background: #111216; border-top: 1px solid #30343a; }
+.about-contact__specs h3 { font-size: clamp(30px, 3.3vw, 50px); line-height: 1.04; margin: 20px 0; letter-spacing: -.04em; }
+.about-contact__specs p { font-size: 12px; max-width: 320px; }
+.about-contact__specs table { border-collapse: collapse; width: 100%; }
+.about-contact__specs th, .about-contact__specs td { border-bottom: 1px solid #33363c; text-align: left; padding: 13px 10px; font-size: 11px; font-weight: 400; }
+.about-contact__specs thead th { color: #949aa3; font-size: 9px; letter-spacing: .15em; }
+.about-contact__specs td { color: #a7adb4; }
+.about-contact .contact { padding: 90px max(6vw, 24px); border-top: 1px solid #30343a; }
+.about-contact__loading { padding: 50px max(6vw, 24px); color: #aaa; }
+@media (max-width: 800px) {
+  .about-contact__intro, .about-contact__specs { grid-template-columns: 1fr; padding: 75px 24px; gap: 40px; }
+  .about-contact__brand { padding: 35px 24px; }
+  .about-contact__brand .brand img { width: 180px; }
+  .about-contact .contact { padding: 75px 24px; }
+}

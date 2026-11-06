@@ -45,9 +45,9 @@ export default function Contact() {
     }
   }
   return (
-    <section id="contact" className="section contact">
+    <div className="contact">
       <div>
-        <Heading number="09" label="START A CONVERSATION">
+        <Heading number="05" label="START A CONVERSATION">
           LET’S BUILD
           <br />
           WHAT’S NEXT<span className="red">.</span>
@@ -143,6 +143,6 @@ export default function Contact() {
           {status === "success" && <CheckCircle2 size={18} />} {message}
         </div>
       </form>
-    </section>
+    </div>
   );
 }

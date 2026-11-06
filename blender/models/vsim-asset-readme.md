@@ -1,0 +1,117 @@
+# Creating characters with Blender → vsim
+
+You don't have to hand-code characters. **Blender** (free, open-source, Linux/macOS/Windows) can
+model, rig, animate, and export glTF — and vsim's `loadGltfRig()` reads that glTF directly. This
+guide shows the headless workflow we use to generate `library/figure.glb`.
+
+## 1. Install Blender (no root needed)
+
+Blender ships a portable tarball — no `apt`/`sudo` required:
+
+```bash
+curl -L https://download.blender.org/release/Blender4.5/blender-4.5.9-linux-x64.tar.xz | tar xJ
+./blender-4.5.9-linux-x64/blender --background --version   # verify it runs headless
+```
+
+(Or `apt install blender` / `snap install blender` / `flatpak install flathub org.blender.Blender`
+if you have the rights.)
+
+**No Blender binary at all? `pip install bpy`.** Blender is also published as a Python module
+on PyPI — the same headless scripts run under plain `python3`:
+
+```bash
+pip install bpy                                     # Blender 5.x as a Python module
+python3 scripts/blender/make-character.py -- character.glb
+```
+
+This is how vsim's Cycles renders work in CI/containers where no binary can be installed. The
+Cycles runner (`apps/studio/cycles-render.mjs`) resolves Blender automatically: an explicit
+path → `$VSIM_BLENDER` → `blender` on PATH → the pip `bpy` module.
+
+## 2. Generate a rigged, animated character
+
+[`scripts/blender/make-character.py`](../../scripts/blender/make-character.py) builds a humanoid
+(armature + skinned mesh + a walk clip) and exports glTF — run it headless:
+
+```bash
+blender --background --python scripts/blender/make-character.py -- character.glb
+```
+
+It exports with TRS joints, float skin weights, and a `walk` animation — exactly what vsim's loader
+supports. Edit the script (bones, proportions, keyframes) to change the character.
+
+## 3. Use it in a scene
+
+```ts
+import { loadGltfRig } from "@vsim/assets";
+const rig = await loadGltfRig("character.glb", 30);
+// then .character("hero", rig, { clip: "walk", ... })  — see examples/11-blender
+```
+
+Drop the `.glb` in `packages/assets/library/` and add a `manifest.json` entry to load it by name
+with `loadCharacter("id")`.
+
+## Realistic humans
+
+For photoreal/realistic humans (skin, clothing, full body), install a Blender character-generator
+add-on and export glTF the same way — all free/open-source:
+
+- **MPFB 2** (MakeHuman Plugin For Blender) — parametric humans with age/build/ethnicity, skin, clothing.
+- **CharMorph** — successor to MB-Lab; rigged characters with hair/clothing.
+- **MakeHuman** (standalone) — generates a rigged human base mesh, export to glTF/Blender.
+
+Generate + rig + animate in Blender, export `.glb`, and load it exactly as above. vsim now also
+samples the model's base-color texture, so textured exports render with their real surface detail.
+
+**vsim ships a working example of this:** [`scripts/blender/make-human.py`](../../scripts/blender/make-human.py)
+drives **MakeHuman (MPFB 2)** headlessly — it generates a realistic ~22k-vertex human with a
+53-bone rig, applies a **real skin texture**, adds a walk, and exports glTF. The result is bundled as
+`library/human.glb` (CC0) and shown in `examples/12-makehuman` (`loadCharacter("human")`). Run it yourself:
+
+```bash
+# 1. the add-on
+curl -L https://files.makehumancommunity.org/plugins/mpfb2-latest.zip -o mpfb2.zip
+# 2. a real skin (CC0 system-assets pack — skins/eyes/teeth/clothes, 267 MB)
+curl -L https://files.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip -o skins.zip
+unzip skins.zip 'skins/*' -d assets
+# 3. generate (pass a skin .mhmat for a textured human; omit it for a plain mesh)
+blender --background --python scripts/blender/make-human.py -- \
+  mpfb2.zip human.glb assets/skins/young_caucasian_female_special_suit/young_caucasian_female_special_suit.mhmat
+```
+
+The skin is baked to a single base-color map (`skin_type="GAMEENGINE"`) and downscaled to 1024² so the
+GLB stays small (~5.7 MB); glTF exports it as a `baseColorTexture` over the mesh's UVs, which vsim's
+software renderer samples per pixel. The pack has 21 skins (age × ethnicity × sex, plus painted-suit
+variants) — pass any of them.
+
+> Note: vsim's glTF loader currently supports TRS joints, float weights, and PNG/JPEG base-color
+> textures (no matrix-transform joints / normalized-integer weights yet).
+
+## Photoreal rendering (Cycles)
+
+The pure-TS software renderer is the fast, deterministic *draft*. For a **photoreal final**,
+[`scripts/blender/render-cycles.py`](../../scripts/blender/render-cycles.py) path-traces a character
+glTF with Blender's Cycles: it adds **subsurface scattering** to skin materials, a studio 3-point
+light rig, a framed camera, AgX tone mapping, and a shadow-catching floor.
+
+```bash
+blender --background --python scripts/blender/render-cycles.py -- character.glb out.png samples=64 res=800
+```
+
+This is the seed of vsim's photoreal backend (see [`docs/plan-photoreal.md`](../plan-photoreal.md)) —
+the model is *preview fast in the editor, render the final in Cycles*. A bundled `suited` character
+renders photoreal (real skin + a fabric suit + soft shadows) in a few seconds on CPU.
+
+### Path-trace a whole scene document to MP4
+
+[`apps/studio/cycles-render.mjs`](../../apps/studio/cycles-render.mjs) runs the full pipeline for
+any scene document: bake the animation to per-frame glTF, path-trace every frame with Cycles in one
+Blender session, composite text overlays, and encode with ffmpeg:
+
+```bash
+node apps/studio/cycles-render.mjs my.scene.json out/photoreal.mp4 40 2
+# args: <doc.json> <out.mp4> [samples=40] [frame step=1]
+```
+
+It resolves Blender the same way as above (binary → `$VSIM_BLENDER` → PATH → pip `bpy`), so it
+works on machines with nothing but `python3` + `pip install bpy` + `ffmpeg`.

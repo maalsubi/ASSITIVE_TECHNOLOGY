@@ -1,15 +1,8 @@
-import {
-  ArrowUpRight,
-  Radio,
-  ScanLine,
-  Vibrate,
-  Watch,
-  Accessibility,
-  MoveUpRight,
-} from "lucide-react";
-import { useState } from "react";
+import { Scene } from "../components/engineering/Scene";
+import { Radio, ScanLine, Vibrate, Watch, Accessibility } from "lucide-react";
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { ProductVisual, Ecosystem } from "../components/ProductVisual";
+import type { SceneState } from "../components/engineering/EngineeringScene";
 import { Brand } from "../components/Brand";
 export function Heading({
   number,
@@ -29,66 +22,6 @@ export function Heading({
     </div>
   );
 }
-export function Introduction() {
-  return (
-    <section id="introduction" className="section intro">
-      <Heading number="01" label="THE ECOSYSTEM">
-        MORE THAN A<br />
-        WALKING STICK<span className="red">.</span>
-      </Heading>
-      <div className="section-intro reveal">
-        <h3>An intelligent assistive ecosystem.</h3>
-        <p>
-          The IoT-Based Blind People Assistive Module brings a smart assistive
-          stick and two wearable watches together, translating obstacle
-          detection into vibration feedback.
-        </p>
-      </div>
-      <div className="component-grid">
-        {[
-          ["stick", "Smart Assistive Stick", "Detect & communicate"],
-          ["watch", "Wearable Watch – 01", "Receive & alert"],
-          ["watch", "Wearable Watch – 02", "Connected feedback"],
-        ].map(([type, title, caption], i) => (
-          <article className="component reveal" key={title}>
-            <span className="component-index">
-              0{i + 1} <ArrowUpRight size={16} />
-            </span>
-            <ProductVisual type={type as "stick" | "watch"} />
-            <h3>{title}</h3>
-            <p>{caption}</p>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
-export function Cinema() {
-  return (
-    <section className="cinema">
-      <div className="cinema-heading">
-        <span className="eyebrow">CONNECTED BY DESIGN</span>
-        <h2>
-          ONE SYSTEM.
-          <br />
-          <span className="outline">IN SYNC.</span>
-        </h2>
-      </div>
-      <Ecosystem />
-      <div className="cinema-caption">
-        <span className="red">01 — 03</span>
-        <p>
-          Detection. Communication. Feedback.
-          <br />
-          Every component has a purpose.
-        </p>
-      </div>
-      <div className="chapter-track">
-        <div className="chapter-line" />
-      </div>
-    </section>
-  );
-}
 const features = [
   {
     icon: ScanLine,
@@ -105,20 +38,20 @@ const features = [
   {
     icon: Vibrate,
     title: "Haptic feedback",
-    text: "The watches deliver vibration feedback, making an alert something the user can feel.",
+    text: "The watch corresponding to the detected obstacle direction vibrates; both watches respond when obstacles are on both sides.",
     tag: "FEEL",
   },
   {
     icon: Watch,
     title: "Dual wearable assistance",
-    text: "Two watches form the wearable part of the assistive ecosystem.",
+    text: "One watch on each wrist lets the intended design convey left, right or both-side alerts.",
     tag: "RESPOND",
   },
 ];
 export function Technology() {
   return (
     <section id="technology" className="section technology">
-      <Heading number="02" label="THE TECHNOLOGY">
+      <Heading number="06" label="THE TECHNOLOGY">
         INTELLIGENCE
         <br />
         IN EVERY STEP<span className="red">.</span>
@@ -126,7 +59,7 @@ export function Technology() {
       <div className="technology-layout">
         <div className="technical-visual reveal">
           <div className="crosshair" />
-          <ProductVisual type="rear" />
+          <Scene mode="module" />
           <span className="technical-tag">INTEGRATED ASSISTIVE MODULE</span>
           <div className="scan-bar" />
         </div>
@@ -150,18 +83,25 @@ export function Technology() {
 const steps = [
   [
     "DETECT",
-    "The assistive stick detects an obstacle using its sensing mechanism.",
+    "The intended sensing system identifies an obstacle near the user.",
   ],
-  ["PROCESS", "The system processes the detection information."],
-  ["TRANSMIT", "An alert is communicated to the wearable devices."],
-  ["ALERT", "The watches provide vibration feedback to the user."],
+  ["IDENTIFY DIRECTION", "The alert is classified as left, right or both sides."],
+  [
+    "TRANSMIT",
+    "The intended design routes an alert to the corresponding wristwatch.",
+  ],
+  ["HAPTIC FEEDBACK", "The corresponding watch vibrates; both watches respond for both-side obstacles."],
   ["RESPOND", "The user can respond to the alert while navigating."],
 ];
 export function HowItWorks() {
   const [active, setActive] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const signal = useRef<SceneState>({ progress: 0, focus: 0, manual: null, paused: false });
+  const results = ["LEFT WATCH", "RIGHT WATCH", "BOTH WATCHES"];
   return (
     <section id="how-it-works" className="section process">
-      <Heading number="03" label="HOW IT WORKS">
+      <Heading number="04" label="HOW IT WORKS">
         FROM DETECTION
         <br />
         TO DIRECTION<span className="red">.</span>
@@ -199,7 +139,22 @@ export function HowItWorks() {
         ))}
       </div>
       <div className="process-stage">
-        <Ecosystem />
+        <div className="process-simulator">
+          <Scene mode="ecosystem" state={signal} />
+          <div className="process-simulator-controls" role="group" aria-label="Obstacle direction simulator">
+            {[
+              ["LEFT OBSTACLE", "LEFT WATCH"],
+              ["RIGHT OBSTACLE", "RIGHT WATCH"],
+              ["BOTH SIDES", "BOTH WATCHES"],
+            ].map(([label, result], i) => (
+              <button key={label} aria-pressed={direction === i} onClick={() => { setDirection(i); signal.current.focus = i; }}>
+                {label}<span>{result}</span>
+              </button>
+            ))}
+            <button onClick={() => { signal.current.paused = !paused; setPaused(!paused); }}>{paused ? "PLAY SIGNAL" : "PAUSE SIGNAL"}</button>
+          </div>
+          <p className="process-alert-result" aria-live="polite">{results[direction]} RECEIVE{direction === 2 ? "" : "S"} THE ILLUSTRATIVE ALERT</p>
+        </div>
         <motion.div
           key={active}
           initial={{ opacity: 0.5, y: 8 }}
@@ -215,107 +170,13 @@ export function HowItWorks() {
           <span className="eyebrow red">ILLUSTRATIVE PROCESS</span>
         </motion.div>
       </div>
-    </section>
-  );
-}
-export function Hardware() {
-  const [expanded, setExpanded] = useState(false);
-  return (
-    <section id="product" className="section hardware">
-      <Heading number="04" label="HARDWARE / INSIDE THE SYSTEM">
-        PURPOSE IN
-        <br />
-        EVERY COMPONENT<span className="red">.</span>
-      </Heading>
-      <div className={`hardware-layout ${expanded ? "expanded" : ""}`}>
-        <div className="hardware-art reveal">
-          <div className="hardware-layer layer-back">
-            <span>01 / OUTER ENCLOSURE</span>
-          </div>
-          <div className="hardware-layer layer-board">
-            <ProductVisual type="board" />
-          </div>
-          <div className="hardware-layer layer-front">
-            <span>02 / INTERNAL ELECTRONIC BOARD</span>
-            <span>03 / EMBEDDED COMPONENTS</span>
-          </div>
-        </div>
-        <div className="hardware-copy reveal">
-          <span className="eyebrow red">ENGINEERED AS ONE</span>
-          <h3>
-            A closer look.
-            <br />A connected whole.
-          </h3>
-          <p>
-            The supplied CAD view reveals an electronic board within its
-            enclosure. Explore this internal view alongside the assistive handle
-            and wearable devices.
-          </p>
-          <button
-            className="button secondary"
-            onClick={() => setExpanded(!expanded)}
-            aria-pressed={expanded}
-          >
-            {expanded ? "COLLAPSE LAYERS" : "EXPLORE THE LAYERS"}{" "}
-            <MoveUpRight size={18} />
-          </button>
-          <small>
-            Conceptual layer arrangement using the supplied internal CAD view.
-            Component identities and dimensions remain to be specified.
-          </small>
-          <a href="#specifications" className="text-link">
-            VIEW SPECIFICATIONS <ArrowUpRight size={15} />
-          </a>
-        </div>
-      </div>
-    </section>
-  );
-}
-export function Wearables() {
-  return (
-    <section className="section wearables">
-      <Heading number="05" label="THE WEARABLE EXPERIENCE">
-        FEEL THE ALERT.
-        <br />
-        <span className="outline">KNOW WHEN TO RESPOND.</span>
-      </Heading>
-      <div className="wearable-stage reveal">
-        <div className="haptic-watch">
-          <div className="haptic-ring" />
-          <div className="haptic-ring second" />
-          <ProductVisual type="watch" />
-          <span>WEARABLE 01</span>
-        </div>
-        <div className="transmission">
-          <Radio size={36} />
-          <div className="transmission-track">
-            <i className="signal-dot" />
-          </div>
-          <span>ALERT TRANSMITTED</span>
-        </div>
-        <div className="haptic-watch">
-          <div className="haptic-ring" />
-          <div className="haptic-ring second" />
-          <ProductVisual type="watch" />
-          <span>WEARABLE 02</span>
-        </div>
-      </div>
-      <div className="wearable-caption">
-        <p>
-          Obstacle detected <span>→</span> Alert transmitted <span>→</span>{" "}
-          Watch vibration
-        </p>
-        <small>
-          Visual explanation only. This website is not connected to the
-          hardware.
-        </small>
-      </div>
+      <p className="model-disclosure">Directional response represents the intended design. Sensor position, firmware behavior and watch hardware require verification.</p>
     </section>
   );
 }
 export function Purpose() {
   return (
-    <section className="section purpose">
+    <section id="why-it-matters" className="section purpose">
       <div className="purpose-symbol reveal">
         <Accessibility size={150} strokeWidth={0.6} />
         <span>
@@ -325,7 +186,7 @@ export function Purpose() {
         </span>
       </div>
       <div>
-        <Heading number="06" label="WHY IT MATTERS">
+        <Heading number="05" label="WHY IT MATTERS">
           DESIGNED AROUND
           <br />
           INDEPENDENT MOBILITY<span className="red">.</span>
@@ -358,7 +219,7 @@ const specs = [
 export function Specifications() {
   return (
     <section id="specifications" className="section specifications">
-      <Heading number="07" label="TECHNICAL SPECIFICATIONS">
+      <Heading number="06" label="TECHNICAL SPECIFICATIONS">
         THE DETAILS
         <br />
         BEHIND THE DESIGN<span className="red">.</span>
@@ -381,7 +242,7 @@ export function Specifications() {
           {specs.map((s) => (
             <tr key={s}>
               <th scope="row">{s}</th>
-              <td>To be specified</td>
+              <td>Pending verification</td>
             </tr>
           ))}
         </tbody>
@@ -397,7 +258,7 @@ export function About() {
         <span>IDEAS. ENGINEERING. IMPACT.</span>
       </div>
       <div>
-        <Heading number="08" label="ABOUT TECHO SPARK INDUSTRIES">
+        <Heading number="07" label="ABOUT TECHO SPARK INDUSTRIES">
           ENGINEERING TECHNOLOGY FOR A MORE ACCESSIBLE WORLD
           <span className="red">.</span>
         </Heading>

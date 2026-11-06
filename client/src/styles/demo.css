@@ -1,0 +1,171 @@
+.product-demo {
+  background: #0b0c0e;
+  padding: 110px 5vw 70px;
+  border-top: 1px solid #303238;
+  min-height: 100vh;
+  overflow: hidden;
+}
+.demo-header h2 {
+  font-size: clamp(45px, 6vw, 92px);
+  line-height: 0.96;
+  letter-spacing: -3px;
+  margin: 30px 0 20px;
+  font-weight: 800;
+}
+.demo-header em {
+  font-style: normal;
+  color: #9b9ea5;
+}
+.demo-header p {
+  font-size: 13px;
+}
+.demo-stage {
+  height: 540px;
+  position: relative;
+  background: radial-gradient(ellipse at 55% 55%, #2c303844, transparent 60%);
+}
+.demo-stage video { display: block; width: 100%; height: 100%; object-fit: cover; background: #111216; }
+.demo-progress { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: #494b50; }
+.demo-progress span { display: block; height: 100%; background: #e5232b; transition: width .08s linear; }
+.demo-stage-label {
+  position: absolute;
+  bottom: 25px;
+  right: 3%;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #e5232b;
+}
+.demo-caption {
+  display: flex;
+  gap: 30px;
+  align-items: baseline;
+  min-height: 85px;
+}
+.demo-caption h3 {
+  font-size: 24px;
+  min-width: 145px;
+}
+.demo-caption p {
+  font-size: 13px;
+  max-width: 600px;
+}
+.demo-steps {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-top: 1px solid #34363b;
+  border-bottom: 1px solid #34363b;
+}
+.demo-steps button {
+  background: none;
+  border: 0;
+  border-right: 1px solid #34363b;
+  color: #989ba1;
+  text-align: left;
+  padding: 18px 12px;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+.demo-steps button span {
+  display: block;
+  color: #e5232b;
+  margin-bottom: 8px;
+}
+.demo-steps button[aria-selected="true"] {
+  background: #e5232b;
+  color: #fff;
+}
+.demo-steps button[aria-selected="true"] span {
+  color: #fff;
+}
+.demo-controls {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+}
+.demo-controls button {
+  background: #17191d;
+  border: 1px solid #3b3e42;
+  color: #fff;
+  padding: 13px 18px;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+.demo-controls button:first-child {
+  background: #e5232b;
+}
+.demo-controls button:disabled {
+  opacity: 0.4;
+}
+.product-demo > .model-disclosure {
+  font-size: 10px !important;
+  color: #888 !important;
+}
+@media (max-width: 700px) {
+  .product-demo {
+    padding: 80px 24px 45px;
+  }
+  .demo-header h2 {
+    font-size: 42px;
+  }
+  .demo-stage {
+    height: 440px;
+    margin: 0 -24px;
+  }
+  .demo-steps {
+    display: flex;
+    overflow-x: auto;
+  }
+  .demo-steps button {
+    min-width: 82px;
+  }
+  .demo-caption {
+    display: block;
+    min-height: 130px;
+  }
+  .demo-caption p {
+    font-size: 11px;
+  }
+  .demo-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .demo-controls button {
+    font-size: 8px;
+    padding: 10px;
+  }
+}
+
+.scenario-select {
+  display: flex;
+  gap: 8px;
+  margin: 28px 0 4px;
+}
+.scenario-select button {
+  flex: 1;
+  text-align: left;
+  background: #15171a;
+  border: 1px solid #33383d;
+  color: #fff;
+  padding: 16px;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+.scenario-select button[aria-pressed="true"] {
+  border-color: #e5232b;
+  background: #391519;
+}
+.scenario-select span {
+  display: block;
+  color: #a8aab0;
+  font-size: 9px;
+  margin-top: 8px;
+}
+@media (max-width: 700px) {
+  .scenario-select {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .scenario-select button {
+    padding: 12px;
+  }
+}

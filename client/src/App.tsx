@@ -1,22 +1,12 @@
-import { lazy, Suspense } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import { MotionConfig } from "framer-motion";
 import { Navigation } from "./components/Navigation";
 import { Footer } from "./components/Footer";
 import { Hero } from "./sections/Hero";
-import {
-  Introduction,
-  Cinema,
-  Technology,
-  HowItWorks,
-  Hardware,
-  Wearables,
-  Purpose,
-  Specifications,
-  About,
-} from "./sections/Story";
+import { ProductStory } from "./sections/ProductStory";
+import { HowItWorks } from "./sections/HowItWorks";
+import { AboutContact } from "./sections/AboutContact";
 import { useCinematic } from "./hooks/useCinematic";
-const Contact = lazy(() => import("./sections/Contact"));
 function Home() {
   useCinematic();
   return (
@@ -28,24 +18,10 @@ function Home() {
       <Navigation />
       <main id="main">
         <Hero />
-        <Introduction />
-        <Cinema />
-        <Technology />
+        <ProductStory kind="module" />
+        <ProductStory kind="watch" />
         <HowItWorks />
-        <Hardware />
-        <Wearables />
-        <Purpose />
-        <Specifications />
-        <About />
-        <Suspense
-          fallback={
-            <section id="contact" className="section">
-              Loading contact form…
-            </section>
-          }
-        >
-          <Contact />
-        </Suspense>
+        <AboutContact />
       </main>
       <Footer />
     </>
